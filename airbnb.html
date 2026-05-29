@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Airbnb | Holiday Rental</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Inter',sans-serif;
+        }
+        body{
+            background:#fff;
+            animation: pageLoad 1.2s ease;
+        }
+        @keyframes pageLoad{
+            from{opacity:0; transform:translateY(20px);}
+            to{opacity:1; transform:translateY(0);}}
+        /* NAVBAR */
+        header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px 80px;
+            border-bottom:1px solid #eee;
+            position:sticky;
+            top:0;
+            background:#fff;
+            z-index:1000; 
+        }
+        .logo{
+            font-size:34px;
+            font-weight:700;
+            color:#ff385c;
+            cursor:pointer;
+            animation: logoSlide 1s ease;
+        }
+        @keyframes logoSlide{
+            from{opacity:0; transform:translateX(-50px);}
+            to{opacity:1; transform:translateX(0);}}
+        /* CENTER NAV */
+        .center-nav{
+            display:flex;
+            gap:30px;
+        }
+        .nav-item{
+            font-size:16px;
+            font-weight:500;
+            cursor:pointer;
+            padding-bottom:8px;
+            position:relative;
+        }
+        .nav-item.active::after{
+            content:'';
+            position:absolute;
+            left:0;
+            bottom:0;
+            width:100%;
+            height:2px;
+            background:#222;
+            border-radius:10px;
+        }
+        /* RIGHT */
+        .right-nav{
+            display:flex;
+            align-items:center;
+            gap:20px;
+        }
+        .host{
+            font-size:14px;
+            font-weight:500;
+            cursor:pointer;
+        }
+        .profile{
+            border:1px solid #ddd;
+            padding:12px 16px;
+            border-radius:30px;
+            cursor:pointer;
+            display:flex;
+            gap:10px;
+        }
+        .menu-popup{
+            position:absolute;
+            top:90px;
+            right:70px;
+            width:320px;
+            background:white;
+            border-radius:24px;
+            box-shadow:0 8px 30px rgba(0,0,0,.15);
+            display:none;
+            z-index:9999;
+            overflow:hidden;
+            animation:popup .25s ease;
+        }
+        .menu-item{
+            padding:20px 24px;
+            cursor:pointer;
+            font-size:18px;
+        }
+        .menu-item:hover{
+            background:#f7f7f7;
+        }
+        .menu-item p{
+            font-size:14px;
+            color:gray;
+            margin-top:8px;
+        }
+        .menu-popup hr{
+            border:none;
+            border-top:1px solid #eee;
+        }
+        /* SEARCH */
+        .search-wrapper{
+            display:flex;
+            justify-content:center;
+            margin-top:30px;
+            animation: searchPop 1.2s ease;
+        }
+        @keyframes searchPop{
+            from{opacity:0; transform:scale(0.85);}
+            to{opacity:1; transform:scale(1);}}
+        .search-box{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            width:900px;
+            background:#fff;
+            border:1px solid #ddd;
+            border-radius:50px;
+            padding:10px;
+            box-shadow:0 4px 20px rgba(0,0,0,0.08);
+        }
+        .search-item{
+            padding:14px 22px;
+            border-radius:40px;
+            cursor:pointer;
+            transition:0.3s;
+            flex:1;
+        }
+        .search-item:hover{
+            background:#f7f7f7;
+        }
+        .search-item label{
+            display:block;
+            font-size:12px;
+            font-weight:600;
+            margin-bottom:5px;
+        }
+        .search-item input{
+            border:none;
+            outline:none;
+            font-size:14px;
+            width:100%;
+            background:transparent;
+        }
+        .search-btn{
+            width:50px;
+            height:50px;
+            border-radius:50%;
+            background:#ff385c;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:white;
+            font-size:20px;
+            cursor:pointer;
+            border:none;
+            transition:0.3s;
+            animation:pulse 2s infinite;
+        }
+        @keyframes pulse{
+            0%{box-shadow:0 0 0 0 rgba(255,56,92,.5);}
+            70%{box-shadow:0 0 0 18px rgba(255,56,92,0);}
+            100%{box-shadow:0 0 0 0 rgba(255,56,92,0);}}
+        .search-btn:hover{
+            transform:scale(1.08);
+        }
+        /* RESPONSIVE */
+        @media(max-width:1000px){
+            header{
+                padding:20px 30px;
+            }
+
+        .search-box{
+            width:95%;
+        }
+        .center-nav{
+            display:none;
+        }
+        .host{
+            display:none;
+        }}
+        /* CATEGORY */
+        .category-wrapper{
+            display:flex;
+            align-items:center;
+            padding:20px 70px;
+            gap:20px;
+        }
+        .categories{
+            display:flex;
+            overflow-x:auto;
+            gap:30px;
+            scroll-behavior:smooth;
+            flex:1;
+        }
+        .categories::-webkit-scrollbar{
+            display:none;
+        }
+        .cat{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            cursor:pointer;
+            opacity:.6;
+            transition:.3s;
+            min-width:90px;
+        }
+        .cat:hover{
+            opacity:1;
+        }
+        .cat span{
+            font-size:13px;
+            margin-top:8px;
+        }
+        .active-cat{
+            opacity:1;
+            font-weight:600;
+        }
+        .scroll-btn{
+            border:none;
+            width:40px;
+            height:40px;
+            border-radius:50%;
+            cursor:pointer;
+            background:#fff;
+            box-shadow:0 2px 10px rgba(0,0,0,.12);
+        }
+        /* CARDS */
+        .cards-section{
+            padding:30px 70px;
+        }
+        .cards-container{
+            display:flex;
+            gap:16px;
+            overflow-x:auto;
+            scroll-behavior:smooth;
+        }
+        .cards-container::-webkit-scrollbar{
+            display:none;
+        }
+        .card{
+            min-width:220px;
+            width:220px;
+            flex-shrink:0;
+            cursor:pointer;
+            transition:transform .28s ease, box-shadow .28s ease;
+            border-radius:22px;
+            opacity:0;
+            animation: cardReveal .8s ease forwards;
+        }
+        @keyframes cardReveal{
+            from{opacity:0; transform:translateY(50px);}
+            to{opacity:1; transform:translateY(0);}}
+        .img-box{
+            position:relative;
+            overflow:hidden;
+            border-radius:22px;
+            box-shadow:0 2px 12px rgba(0,0,0,.08);
+            transition:.3s ease;
+        }
+        .img-box img{
+            width:100%;
+            height: 170px;
+            object-fit:cover;
+            border-radius: 18px;
+            display: block;
+            transition:.4s;
+        }
+        .card:hover{
+            transform:translateY(-6px);
+        }
+        .card:hover img{
+            transform:scale(1.08);
+        }
+        .card:hover .img-box{
+            box-shadow:0 12px 26px rgba(0,0,0,.16);
+        }
+        .heart{
+            position:absolute;
+            top:18px;
+            right:18px;
+            font-size:28px;
+            color:white;
+            cursor:pointer;
+        }
+        .card-info{
+            padding-top:14px;
+            padding-left:4px;
+            padding-right:4px;
+        }
+        .top-row{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-start;
+            font-size:15px;
+            font-weight:500;
+            gap:8px;
+        }
+        .gray{
+            color:gray;
+            margin-top:6px;
+        }
+        .price{
+            margin-top:10px;
+            font-weight:700;
+            font-size:15px;
+            color:#111;
+        }
+        .location-row{
+            margin-bottom:50px;
+        }
+        .row-title{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:20px;
+        }
+        .row-title h2{
+            font-size:28px;
+            font-weight:600;
+        }
+        .inspiration-section{
+            background:#f7f7f7;
+            padding:60px 70px;
+            margin-top:60px;
+        }
+        .inspiration-section h2{
+            font-size:28px;
+            margin-bottom:30px;
+        }
+        .inspiration-tabs{
+            display:flex;
+            gap:25px;
+            margin-bottom:30px;
+            overflow-x:auto;
+        }
+        .inspiration-tabs span{
+            cursor:pointer;
+            color:gray;
+            font-weight:500;
+        }
+        .active-tab{
+            color:black !important;
+            font-weight:600;
+            border-bottom:2px solid black;
+            padding-bottom:6px;
+        }
+        .inspiration-grid{
+            display:grid;
+            grid-template-columns:repeat(6,1fr);
+            gap:35px;
+        }
+        .inspiration-grid h4{
+            font-size:18px;
+            font-weight:500;
+            margin-bottom:6px;
+            cursor:pointer;
+        }
+        .inspiration-grid p{
+            color:gray;
+            font-size:15px;
+            cursor:pointer;
+        }
+        .footer{
+            background:#f7f7f7;
+            padding:55px 80px 20px;
+            border-top:1px solid #ddd;
+        }
+        .footer-grid{
+            display:grid;
+            grid-template-columns:repeat(3,1fr);
+            gap:80px;
+            padding-bottom:40px;
+        }
+        .footer-grid h3{
+            font-size:16px;
+            font-weight:600;
+            margin-bottom:18px;
+            color:#222;
+        }
+        .footer-grid p{
+            margin-bottom:14px;
+            font-size:14px;
+            color:#555;
+            cursor:pointer;
+            transition:.2s;
+        }
+        .footer-bottom{
+            border-top:1px solid #ddd;
+            padding-top:22px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            font-size:14px;
+            color:#555;
+            flex-wrap:wrap;
+            gap:15px;
+        }
+        .footer-right{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            font-weight:500;
+            cursor:pointer;
+        }
+        .footer-grid p:hover{
+            text-decoration:underline;
+            color:#000;
+        }
+        .service-card{
+            min-width:250px;
+            background:white;
+            border-radius:22px;
+            overflow:hidden;
+            box-shadow:0 4px 16px rgba(0,0,0,.08);
+        }
+        .service-card img{
+            width:100%;
+            height:180px;
+            object-fit:cover;
+        }
+        .service-card h3{
+            padding:14px 16px 8px;
+        }
+        .service-card p{
+            padding:0 16px 18px;
+            color:gray;
+        }
+        .property-popup{
+            position:fixed;
+            top:0;
+            left:0;
+            width:100%;
+            height:100%;
+            background:rgba(0,0,0,.55);
+            display:none;
+            justify-content:center;
+            align-items:center;
+            z-index:9999;
+        }
+        .popup-box{
+            background:white;
+            width:560px;
+            border-radius:28px;
+            padding:28px;
+            position:relative;
+            animation:popup .25s ease;
+            box-shadow:0 20px 60px rgba(0,0,0,.22);
+        }
+        @keyframes popup{
+            from{
+                transform:scale(.9);opacity:0;
+            }
+            to{
+                transform:scale(1);opacity:1;
+            }}
+            .popup-img{
+                width:100%;
+                height:280px;
+                object-fit:cover;
+                border-radius:18px;
+                margin-bottom:18px;
+            }
+            .close-popup{
+                position:absolute;
+                right:25px;
+                top:20px;
+                font-size:28px;
+                cursor:pointer;
+            }
+            .amenities{
+                display:flex;
+                flex-wrap:wrap;
+                gap:10px;
+                margin:22px 0;
+            }
+            .amenities span{
+                background:#f7f7f7;
+                padding:10px 16px;
+                border-radius:14px;
+                font-size:14px;
+                color:#444;
+                font-weight:500;
+                border:1px solid #ececec;
+                transition:.2s ease;
+            }
+            .amenities span:hover{
+                background:#efefef;
+            }
+            .reserve-btn{
+                width:100%;
+                padding:16px;
+                border:none;
+                background:#ff385c;
+                color:white;
+                font-size:18px;
+                border-radius:16px;
+                cursor:pointer;
+                font-weight:600;
+                transition:.25s ease;
+            }
+            .reserve-btn:hover{
+                transform:translateY(-2px);
+                box-shadow:0 10px 22px rgba(255,56,92,.35);
+                }
+        </style>
+    </head>
+    <body>
+        <header>
+            <div class="logo">Airbnb</div>
+            <div class="center-nav">
+                <div class="nav-item active">Homes</div>
+                <div class="nav-item">Experiences</div>
+                <div class="nav-item">Services</div>
+            </div>
+            <div class="right-nav">
+                <div class="host">Airbnb your home</div>
+                <div class="profile" onclick="toggleMenu()">☰ 👤</div>
+            </div>
+        </header>
+        <div class="menu-popup" id="menuPopup">
+            <div class="menu-item" onclick="openHelp()">❓ Help Centre</div>
+            <hr>
+            <div class="menu-item">
+                <strong>Become a host</strong>
+                <p>It's easy to start hosting and earn extra income.</p>
+            </div>
+            <hr>
+            <div class="menu-item">Refer a host</div>
+            <div class="menu-item">Find a co-host</div>
+            <hr>
+            <div class="menu-item">
+                <strong>Log in or Sign up</strong>
+            </div>
+        </div>
+        <section class="search-wrapper">
+            <div class="search-box">
+                <div class="search-item">
+                    <label>Where</label>
+                    <input type="text" id="where" placeholder="Search destinations">
+                </div>
+                <div class="search-item">
+                    <label>Check in</label>
+                    <input type="date" id="checkin">
+                </div>
+                <div class="search-item">
+                    <label>Check out</label>
+                    <input type="date" id="checkout">
+                </div>
+                <div class="search-item">
+                    <label>Who</label>
+                    <input type="text" id="guests" placeholder="Add guests">
+                </div>
+                <button class="search-btn" onclick="searchStay()">🔍</button>
+            </div>
+        </section>
+        <!-- CATEGORY SECTION -->
+        <section class="category-wrapper">
+            <button class="scroll-btn left" onclick="scrollLeftCards()">❮</button>
+            <div class="categories" id="categories">
+                <div class="cat active-cat">🏖️<span>Beachfront</span></div>
+                <div class="cat">🏔️<span>Amazing Views</span></div>
+                <div class="cat">🔥<span>Trending</span></div>
+                <div class="cat">🏊<span>Pools</span></div>
+                <div class="cat">🏕️<span>Camping</span></div>
+                <div class="cat">🏡<span>Cabins</span></div>
+                <div class="cat">🌴<span>Islands</span></div>
+                <div class="cat">🏙️<span>City</span></div>
+                <div class="cat">❄️<span>Arctic</span></div>
+            </div>
+            <button class="scroll-btn right"onclick="scrollRightCards()">❯</button>
+        </section>
+        <!-- PROPERTY CARDS -->
+        <section class="cards-section">
+            <div class="location-row">
+                <div class="cards-container" id="cardsContainer"></div>
+            </div>
+            <!-- HYDERABAD -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Popular homes in Hyderabad → </h2>
+                </div>
+                <div class="cards-container" id="hyderabadContainer"></div>
+            </div>
+            <!-- VISAKHAPATNAM -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Available in Visakhapatnam this weekend →</h2>
+                </div>
+                <div class="cards-container" id="vizagContainer"></div>
+            </div>
+            <!-- BENGALURU -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Stay in Bengaluru →</h2>
+                </div>
+                <div class="cards-container" id="blrContainer"></div>
+            </div>
+            <!-- GOA -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Available next month in North Goa →</h2>
+                </div>
+                <div class="cards-container" id="goaContainer"></div>
+            </div>
+            <!-- TIRUPATI -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Places to stay in Tirupati →</h2>
+                </div>
+                <div class="cards-container" id="tirupatiContainer"></div>
+            </div>
+            <!-- JAIPUR -->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Heritage stays in Jaipur →</h2>
+                </div>
+                <div class="cards-container" id="jaipurContainer"></div>
+            </div>
+            <!-- UDAIPUR-->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Monument stays in Udaipur →</h2>
+                </div>
+                <div class="cards-container" id="udaipurContainer"></div>
+            </div>
+            <!-- MUNNAR-->
+            <div class="location-row">
+                <div class="row-title">
+                    <h2>Beautiful stays in Munnar →</h2>
+                </div>
+                <div class="cards-container" id="munnarContainer"></div>
+            </div>
+        </section>
+        <!-- PROPERTY POPUP -->
+        <div class="property-popup" id="propertyPopup">
+            <div class="popup-box">
+                <span class="close-popup" onclick="closePopup()">✕</span>
+                <img id="popupImg" src="" class="popup-img">
+                <h2 id="popupTitle"></h2>
+                <p id="popupRating"></p>
+                <p id="popupPrice"></p>
+                <div class="amenities">
+                    <span>Wifi</span>
+                    <span>Pool</span>
+                    <span>Kitchen</span>
+                    <span>Free Parking</span>
+                </div>
+                <button class="reserve-btn">Reserve</button>
+            </div>
+        </div>
+        <script>
+        const destinations = [
+            "Goa",
+            "Bali",
+            "Paris",
+            "Dubai",
+            "Maldives",
+            "Tokyo",
+            "London",
+            "Kerala",
+            "Manali",
+            "Ooty",
+            "Kashmir",
+            "Hyderabad",
+            "Visakhapatnam",
+            "Vizag",
+            "Bengaluru",
+            "Tirupati",
+            "Santorini",
+            "Jaipur" ,
+            "Udaipur" ,
+            "Munnar", ];
+        // SEARCH FUNCTION
+        function searchStay(){
+            const place =document.getElementById("where").value.toLowerCase().trim();
+            if(place === ""){alert("Please enter a destination");return;}
+            const result =destinations.find(city =>city.toLowerCase() === place);
+            if(result){showResult(result);setTimeout(()=>{
+                document.getElementById("results")?.scrollIntoView({behavior:"smooth"});},100);}
+            else{alert("No stays found");}}
+        // SHOW RESULT
+        function showResult(place){
+            let existing = document.getElementById("results");
+            if(existing){ existing.remove();}
+            const section = document.createElement("section");
+            section.id = "results";
+            section.style.padding ="60px 80px";
+            section.innerHTML = `
+            <h2 style="font-size:32px; margin-bottom:30px;">Stays in ${place}</h2>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:25px;">
+                ${createCard(place)}
+                ${createCard(place)}
+                ${createCard(place)}
+            </div>`;
+            const cardsSection =
+            document.querySelector(".cards-section");
+            cardsSection.before(section); }
+        // PROPERTY CARD
+        function createCard(place){
+            const placeImages = {
+                Goa:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBy_7FDuTMyFiM5a-77Os7vzSM_oSbo7HDqg&s",
+                Bali:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200",
+                Paris:"https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+                Dubai:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
+                Maldives:"https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200",
+                Tokyo:"https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200",
+                London:"https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+                Kerala:"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1200",
+                Manali:"https://c.ndtvimg.com/2025-05/tvo5sgd_manali_625x300_01_May_25.jpg",
+                Ooty:"https://travloger.in/wp-content/uploads/2025/04/iStock-1127001943s-scaled.webp",
+                Kashmir:"https://s7ap1.scene7.com/is/image/incredibleindia/1-amarnath-yatra-pahalgam-jammu-kashmir-city-hero",
+                Hyderabad:"https://www.prestigesouthernstar.info/images/prestige/prestige-villas-in-hyderabad-in-2025.webp",
+                Visakhapatnam:"https://gos3.ibcdn.com/901c5089-b07b-4285-9606-6ffd2962b00d.jpg",
+                Vizag:"https://gos3.ibcdn.com/901c5089-b07b-4285-9606-6ffd2962b00d.jpg",
+                Bengaluru:"https://assets.cntraveller.in/photos/68106e3f9f2ded6f7061548c/1:1/w_750,h_750,c_limit/itc%20windsor.jpeg",
+                Tirupati:"https://assets.simplotel.com/simplotel/image/upload/w_5000,h_3333/x_0,y_261,w_5000,h_2812,r_0,c_crop,q_80,fl_progressive/w_825,f_auto,c_fit/raj-park-hotel---tirupati/Hill_View_ka1xjx",
+                Santorini:"https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200",};
+                const image = placeImages[place] ||"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200";
+                return `
+                <div style="border-radius:20px;overflow:hidden;cursor:pointer;box-shadow:0 5px 20px rgba(0,0,0,0.08);">
+                    <img src="${image}" style="width:100%;height:250px;object-fit:cover;">
+                    <div style="padding:16px">
+                        <h3>${place}</h3>
+                        <p style="color:gray;margin-top:6px;">Entire rental unit</p>
+                        <p style="font-weight:600;margin-top:10px;">₹8,999 night</p>
+                    </div>
+                </div>`;}
+        // NAVIGATION
+        const tabs = document.querySelectorAll(".nav-item");
+        tabs.forEach(tab=>{ tab.addEventListener(
+            "click",()=>{ tabs.forEach(t=>{
+                t.classList.remove("active");
+            });
+        tab.classList.add("active");
+        const selected = tab.innerText.trim();
+        changeSection(selected); });
+        });
+        // CHANGE PAGE CONTENT
+        function changeSection(type){
+            let oldSection = document.getElementById("dynamic-section");
+            if(oldSection){oldSection.remove();}
+              const section =document.createElement("section");
+              section.id ="dynamic-section";
+              section.style.padding ="60px 80px";
+            if(type==="Homes"){
+              section.innerHTML = `
+              <h2 style="font-size:32px; margin-bottom:25px;">Popular Homes</h2>
+              <p>Find homes in amazing places.</p> `;
+            }
+            else if(type==="Experiences"){
+                section.innerHTML = `
+                <h2 style=" font-size:32px; margin-bottom:25px;font-weight:600;">
+                    Explore Airbnb Experiences
+                </h2>
+                <div style="display:flex; gap:18px;
+                overflow-x:auto; padding-bottom:10px;">
+                ${experienceCard(
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+                    "Beach Adventure","Explore beaches with guides" )}
+                ${experienceCard(
+                    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200",
+                    "Mountain Trip", "Beautiful trekking experiences")}
+                ${experienceCard(
+                    "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
+                    "Dubai Tour", "Luxury city exploration" )}
+                ${experienceCard(
+                    "https://static.toiimg.com/photo/53695760.cms",
+                    "Luxury Paris", "Romantic city getaway" )}
+                ${experienceCard(
+                    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+                    "Forest Escape", "Nature & camping experience" )}
+                </div> `; }
+            else if(type==="Services"){
+                section.innerHTML = `
+                <h2 style="font-size:32px; margin-bottom:25px; font-weight:600;">
+                    Premium Airbnb Services
+                </h2>
+                <div style="display:flex; gap:18px; overflow-x:auto;">
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=1200">
+                        <h3>Private Chef</h3>
+                        <p>Luxury dining at your stay</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1522199710521-72d69614c702?w=1200">
+                        <h3>Travel Guide</h3>
+                        <p>Local guides for city tours</p>
+                    </div>
+                    <div class="service-card">
+                        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200">
+                        <h3>Room Setup</h3>
+                        <p>Premium stay preparation</p>
+                    </div>
+                </div>
+                <div style="margin-top:35px; padding:24px; border-radius:20px; background:#f7f7f7;">
+                    <h3>Contact Support</h3>
+                    <p style="margin-top:12px;">📞 +91 98765 43210</p>
+                    <p>✉ support@airbnbclone.com</p>
+                    <p>📍 Hyderabad, India</p>
+                </div> `; }
+                const categoryWrapper =
+                document.querySelector(".category-wrapper");
+                categoryWrapper.before(section); }
+        function experienceCard(img, title, desc){
+            return `
+            <div style="min-width:250px; background:white;
+            border-radius:22px; overflow:hidden;cursor:pointer;
+            box-shadow:0 4px 16px rgba(0,0,0,.08);transition:.3s;">
+            <img src="${img}"
+            style="width:100%; height:180px; object-fit:cover;">
+              <div style="padding:16px;">
+                <h3 style="font-size:18px; margin-bottom:8px;">
+                    ${title}
+                </h3>
+                <p style="color:gray; font-size:14px;line-height:1.5;">
+                    ${desc}
+                </p>
+              </div>
+            </div>`; }
+            const stays = {
+                "Beachfront":[
+                    {name:"Goa",img:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200",
+                    price:"₹8,999 night",rating:"4.95"
+                    },
+                    {name:"Maldives",img:"https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200",
+                    price:"₹24,999 night",rating:"4.98"
+                    },
+                    {name:"Bali",img:"https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200",
+                    price:"₹12,999 night",rating:"4.89"
+                    },
+                    {name:"Kerala",img:"https://images.unsplash.com/photo-1593693411515-c20261bcad6e?w=1200",
+                    price:"₹6,999 night",rating:"4.88"
+                    },
+                    {name:"Santorini",img:"https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200",
+                    price:"₹22,999 night",rating:"4.96"
+                    }
+                ],
+                "Amazing Views":[
+                    {name:"Switzerland",img:"https://static.toiimg.com/thumb/msid-113370310,width-748,height-499,resizemode=4,imgsize-216138/.jpg",
+                    price:"₹18,999 night",rating:"4.96"
+                    },
+                    {name:"Manali",img:"https://c.ndtvimg.com/2025-05/tvo5sgd_manali_625x300_01_May_25.jpg?im=FaceCrop,algorithm=dnn,width=1200,height=738",
+                    price:"₹6,999 night",rating:"4.91"
+                    },
+                    {name:"Kashmir",img:"https://s7ap1.scene7.com/is/image/incredibleindia/1-amarnath-yatra-pahalgam-jammu-kashmir-city-hero?qlt=82&ts=1726816087141",
+                    price:"₹9,999 night",rating:"4.87"
+                    },
+                    {name:"Ooty",img:"https://travloger.in/wp-content/uploads/2025/04/iStock-1127001943s-scaled.webp",
+                    price:"₹5,999 night",rating:"4.85"
+                    }
+                ],
+                "Trending":[
+                    {name:"Tokyo",img:"https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200",
+                    price:"₹17,999 night",rating:"4.95"
+                    },
+                    {name:"Dubai",img:"https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200",
+                    price:"₹22,999 night",rating:"4.97"
+                    },
+                    {name:"Paris",img:"https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1200",
+                    price:"₹19,999 night",rating:"4.88"
+                    },
+                    {name:"London",img:"https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1200",
+                    price:"₹20,999 night",rating:"4.89"
+                    }
+                ],
+                "Pools":[
+                    {name:"Luxury Villa",img:"https://authenticvillaholidays.itravelsoftware.com/fotografije_itravel/4871/41826_636584572872994861.jpg",
+                    price:"₹19,999 night",rating:"4.93"
+                    },
+                    {name:"Pool Resort",img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200",
+                    price:"₹14,999 night",rating:"4.90"
+                    }
+                ],
+                "Camping":[
+                    {name:"Mountain Camp",img:"https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200",
+                    price:"₹4,999 night",rating:"4.80"
+                    }
+                ],
+                "Cabins":[
+                    {name:"Forest Cabin",img:"https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200",
+                    price:"₹8,499 night",rating:"4.92"
+                    },
+                    {name:"Mountain Cabin",img:"https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=1200",
+                    price:"₹9,999 night",rating:"4.94"
+                    }
+                ],
+                "Islands":[
+                    {name:"Maldives Island",img:"https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200",
+                    price:"₹25,999 night",rating:"4.98"
+                    }
+                ],
+                "City":[
+                    {name:"New York",img:"https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=1200",
+                    price:"₹21,999 night",rating:"4.90"
+                    }
+                ],
+                "Arctic":[
+                    {name:"Snow Cabin",img:"https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?w=1200",
+                    price:"₹16,999 night",rating:"4.87"
+                    }
+                ],
+            };
+        // RENDER
+        function renderCards(category){
+            const container =document.getElementById("cardsContainer");
+            container.innerHTML="";
+            if(!stays[category]){
+                category = "Beachfront";
+            }
+            stays[category].forEach(stay=>{container.innerHTML += `
+                <div class="card" onclick="openPopup(
+                '${stay.name}',
+                '${stay.img}',
+                '${stay.price}',
+                '${stay.rating}')">
+                 <div class="img-box">
+                    <img src="${stay.img}">
+                    <div class="heart"
+                    onclick="event.stopPropagation();toggleHeart(this)">♡
+                    </div>
+                 </div>
+                 <div class="card-info">
+                    <div class="top-row">
+                        <h3>${stay.name}</h3>
+                        <p>★ ${stay.rating}</p>
+                    </div>
+                    <p class="gray">Amazing stay</p>
+                    <p class="price">${stay.price}</p>
+                 </div>
+                </div>`;
+            });
+            container.innerHTML += `
+            <div class="card see-all-card" onclick="showCategory('${category}')">
+                <div class="img-box" style="
+                height:170px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                background:#f7f7f7;
+                border-radius:22px;
+                flex-direction:column;">
+                <div style="display:flex; gap:8px;">
+                    <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200"
+                    style="width:60px;height:60px;border-radius:14px;transform:rotate(-10deg);">
+                    <img src="https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=1200"
+                    style="width:60px;height:60px;border-radius:14px;">
+                    <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200"
+                    style="width:60px;height:60px;border-radius:14px;transform:rotate(10deg);">
+                </div>
+                <h3 style="margin-top:15px;">See all</h3>
+                </div>
+            </div>`;
+        }
+        // CATEGORY CLICK
+        const categories = document.querySelectorAll(".cat");
+        categories.forEach(cat=>{
+            cat.addEventListener("click",()=>{
+        categories.forEach(c=>c.classList.remove("active-cat"));
+            cat.classList.add("active-cat");
+        const selected =cat.querySelector("span").innerText.trim();
+        renderCards(selected);});
+        });
+        // DEFAULT
+        renderCards("Beachfront");
+        const extraLocations = {hyderabadContainer:[
+            {name:"Flat in Hyderabad",
+            img:"https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200",
+            price:"₹9,174 for 2 nights",rating:"4.89"
+            },
+            {name:"Villa in Hyderabad",
+            img:"https://www.prestigesouthernstar.info/images/prestige/prestige-villas-in-hyderabad-in-2025.webp",
+            price:"₹17,571 for 2 nights",rating:"4.86"
+            },
+            {name:"Apartment in Hyderabad",
+            img:"https://images.unsplash.com/photo-1494526585095-c41746248156?w=1200",
+            price:"₹8,902 for 2 nights",rating:"5.0"
+            },
+            {name:"Luxury Home Hyderabad",
+            img:"https://images.unsplash.com/photo-1484154218962-a197022b5858?w=1200",
+            price:"₹12,000 for 2 nights",
+            rating:"4.92"
+            },
+            {name:"Studio Stay Hyderabad",
+            img:"https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=1200",
+            price:"₹7,200 for 2 nights",rating:"4.80"
+            },
+            {name:"Elite Home Hyderabad",
+            img:"https://teja10.kuikr.com//r1/20160526/ak_700_585300291-1464251039_700x700.png",
+            price:"₹15,999 for 2 nights",rating:"4.91"
+            }
+        ],
+        vizagContainer:[
+            {name:"simple nature home",
+            img:"https://images.unsplash.com/photo-1518780664697-55e3ad937233?w=1200",
+            price:"₹2,999 night",rating:"4.89"
+            },
+            {name:"Apartment in Vizag",
+            img:"https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200",
+            price:"₹6,999 night",rating:"4.92"
+            },
+            {name:"Ocean View Stay",
+            img:"https://gos3.ibcdn.com/901c5089-b07b-4285-9606-6ffd2962b00d.jpg",
+            price:"₹8,499 night",rating:"4.84"
+            },
+            {name:"Luxury Beach House",
+            img:"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/30/b0/23/2b/caption.jpg?w=1200&h=-1&s=1",
+            price:"₹11,999 night",rating:"4.95"
+            },
+            {name:"Happy Hotel Vizag",
+            img:"https://www.santiamestates.com/blog/admin/assets/img/post/image_2025-08-21-05-21-31_68a6acdb57208.jpg",
+            price:"₹9,499 night",rating:"4.91"
+            },
+            {name:"Sunrise Sea View Stay",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQEc2QVsy43wMv7nXx0Rg29ijRacrHftr1cQ&s",
+            price:"₹1,500 night",rating:"4.72"
+            },
+        ],
+        blrContainer:[
+            {name:"Apartment Bengaluru",
+            img:"https://gplwebsitecdnblob.blob.core.windows.net/godrej-cdn/Images/732b9cba-384d-4a5c-8372-f560b66fb5e6.webp",
+            price:"₹10,499 night",rating:"4.87"
+            },
+            {name:"Luxury Stay Bengaluru",
+            img:"https://assets.cntraveller.in/photos/68106e3f9f2ded6f7061548c/1:1/w_750,h_750,c_limit/itc%20windsor.jpeg",
+            price:"₹13,999 night",rating:"4.94"
+            },
+            {name:"Studio Flat",
+            img:"https://cf.bstatic.com/xdata/images/hotel/max1024x768/153585297.jpg?k=f0f0f7dbf89b2bdc4cf6ec35fe469ea4f3247c1c0f3f736165c4ff269d348711&o=",
+            price:"₹7,499 night",rating:"4.82"
+            },
+            {name:"Modern Home Bengaluru",
+            img:"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=1200",
+            price:"₹8,999 night",rating:"4.90"
+            },
+            {name:"Business Hotel Bengaluru",
+            img:"https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200",
+            price:"₹11,499 night",rating:"4.93"
+            },
+            {name:"Garden View Stay",
+            img:"https://a0.muscache.com/im/pictures/prohost-api/Hosting-1465008126184278990/original/6eb1805e-7aa4-4143-95e4-7adb2c96d7de.jpeg",
+            price:"₹7,499 night",rating:"4.83"
+            }
+        ],
+        goaContainer:[
+            {name:"Villa in North Goa",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5hkpXgUJsZeoo1dJQCgaXusKhC_HJdEDUFQ&s",
+            price:"₹17,999 night",rating:"4.94"
+            },
+            {name:"Beach House Goa",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBy_7FDuTMyFiM5a-77Os7vzSM_oSbo7HDqg&s",
+            price:"₹14,999 night",rating:"4.96"
+            },
+            {name:"Beach villa Goa",
+            img:"https://a0.muscache.com/im/pictures/miso/Hosting-46324353/original/ebbb66e3-ec4c-449c-8d75-412625895c4c.jpeg",
+            price:"₹13,999 night",rating:"4.89"
+            },
+            {name:"Beach Resort Goa",
+            img:"https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200",
+            price:"₹18,999 night",rating:"4.95"
+            },
+            {name:"Luxury Hotel Goa",
+            img:"https://a0.muscache.com/im/pictures/hosting/Hosting-1064378968252196651/original/119fd881-61ba-41da-be4e-0c5b634c36f4.jpeg?im_w=720",
+            price:"₹22,999 night",rating:"4.97"
+            },
+            {name:"Palm Tree Resort",
+            img:"https://r2imghtlak.mmtcdn.com/r2-mmt-htl-image/htl-imgs/201603111355274997-f014e9023d5011e99f940242ac110003.jpg",
+            price:"₹1,999 night",rating:"4.93"
+            },
+        ],
+        tirupatiContainer:[
+            {name:"Flat in Tirupati",
+            img:"https://imagecdn.99acres.com/media1/34428/6/688566989M-1766224570739.webp",
+            price:"₹8,999 2 nights",rating:"4.81"
+            },
+            {name:"Apartment Tirupati",
+            img:"https://q-xx.bstatic.com/xdata/images/hotel/max500/741393210.jpg?k=ae64da3fa0e33428c94ac13f9887e6ef77247e74781ee947524d6d780f5ad804&o=",
+            price:"₹3,999 2 nights",rating:"4.90"
+            },
+            {name:"Temple View Hotel",
+            img:"https://assets.simplotel.com/simplotel/image/upload/w_5000,h_3333/x_0,y_261,w_5000,h_2812,r_0,c_crop,q_80,fl_progressive/w_825,f_auto,c_fit/raj-park-hotel---tirupati/Hill_View_ka1xjx",
+            price:"₹7,499 2 nights",rating:"4.95"
+            },
+            {name:"Hill View Hotel",
+            img:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200",
+            price:"₹6,999 2 nights",rating:"4.89"
+            },
+            {name:"Budget Stay",
+            img:"https://cdn.yatradham.org/media/catalog/product/cache/1/small_image/420x400/040ec09b1e35df139433887a97daa66f/i/m/img_20250801_162756.jpg",
+            price:"₹1,999 2 nights",rating:"4.75"
+            },
+        ],
+        jaipurContainer: [
+            {name:"Royal Palace Stay",
+            img:"https://images.travelandleisureasia.com/wp-content/uploads/sites/2/2025/01/31150835/The-leela-palace-1600x900.jpg",
+            price:"₹14,999 night",rating:"4.93"
+            },
+            {name:"Pink City Haveli",
+            img:"https://housiey.com/blogs/wp-content/uploads/2025/10/Why-Jaipur-Is-Called-the-Pink-City-in-India-History-and-Legends-768x576.jpg",
+            price:"₹9,999 night",rating:"4.84"
+            },
+            {name:"Fort View Resort",
+            img:"https://fortviewresort.com/public/img/slider/17.jpg",
+            price:"₹8,999 night",rating:"4.80"
+            },
+            {name:"Luxury Heritage Hotel",
+            img:"https://media-cdn.tripadvisor.com/media/photo-s/0e/eb/8b/9c/swimming-pool.jpg",
+            price:"₹19,999 night",rating:"4.95"
+            },
+            {name:"Jaipur Royal Villa",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh-izkgighPW3hZXKRqJX9H0ITreX-p90l2Q&s",
+            price:"₹15,999 night",rating:"4.97"
+            },
+            {name:"City Palace Stay",
+            img:"https://assets.cntraveller.in/photos/60ba1bc8e341ff812178e7bd/master/w_1600%2Cc_limit/Gudliya-Suite-City-Palace-Jaipur-866x487.jpg",
+            price:"₹6,999 night",rating:"4.87"
+            },
+        ],
+        udaipurContainer: [
+            {name:"Lake View Villa",
+            img:"https://udaipurpoolvilla.com/wp-content/uploads/2024/04/Private-Villas-in-Udaipur.jpg",
+            price:"₹7,500 night",rating:"4.81"
+            },
+            {name:"Royal Udaipur Palace",
+            img:"https://s7ap1.scene7.com/is/image/incredibleindia/city-palace-udaipur-rajasthan-1-musthead-hero?qlt=82&ts=1742174471611",
+            price:"₹15,999 night",rating:"4.94"
+            },
+            {name:"Luxury Lake Resort",
+            img:"https://media-cdn.tripadvisor.com/media/photo-s/31/80/70/6a/premier-rooms-with-semi.jpg",
+            price:"₹13,999 night",rating:"4.92"
+            },
+            {name:"Sunset View Hotel",
+            img:"https://media-cdn.tripadvisor.com/media/photo-s/0b/0e/ba/45/sunset-view-from-the.jpg",
+            price:"₹9,750 night",rating:"4.90"
+            },
+            {name:"Heritage Stay Udaipur",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc3LjRAf023ZV6KSgWpDyr1DwuMT-gTMSl0w&s",
+            price:"₹8,800 night",rating:"4.89"
+            },
+            {name:"City Lake Apartment",
+            img:"https://a0.muscache.com/im/pictures/hosting/Hosting-1364283734567693081/original/eac44ab6-44c8-435a-b6f4-229ca43e2dbf.jpeg",
+            price:"₹5,999 night",rating:"4.77"
+            },
+        ],
+        munnarContainer: [
+            {name:"Tea Garden Resort",
+            img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0m_gbuHTwThgbhDJ5hmUdFqebWTYO3MeZoA&s",
+            price:"₹3,400 night",rating:"4.79"
+            },
+            {name:"Hill View Cottage",
+            img:"https://gos3.ibcdn.com/c77f69fa-6938-4e83-b70b-d5f6f284a8f1.jpg",
+            price:"₹7,999 night",rating:"4.88"
+            },
+            {name:"Green Valley Stay",
+            img:"https://q-xx.bstatic.com/xdata/images/hotel/max500/382866637.jpg?k=4027f7f79dd30df7ed7f8d2e94292e6a5a4a01ead22732f67596606c92505231&o=",
+            price:"₹10,000 night",rating:"4.94"
+            },
+            {name:"Nature Escape Villa",
+            img:"https://gos3.ibcdn.com/1762c052-f36e-4895-9a83-4aa6a7c469c5.jpg",
+            price:"₹8,750 night",rating:"4.90"
+            },
+            {name:"Mountain Mist Resort",
+            img:"https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2d/c8/e1/dc/caption.jpg?w=900&h=-1&s=1",
+            price:"₹9,500 night",rating:"4.89"
+            },
+            {name:"Peaceful Hills Homestay",
+            img:"https://assets.cntraveller.in/photos/67dd08ce7d01c23b8298d9d5/16:9/w_1024%2Cc_limit/Cover.JPG",
+            price:"₹2,999 night",rating:"4.87"
+            },
+        ]
+        };
+        Object.keys(extraLocations).forEach(containerId=>{
+            const container =document.getElementById(containerId);
+            extraLocations[containerId].forEach(stay=>{
+            container.innerHTML += `
+            <div class="card" onclick="openPopup(
+            '${stay.name}',
+            '${stay.img}',
+            '${stay.price}',
+            '${stay.rating}')">
+              <div class="img-box">
+                <img src="${stay.img}">
+                <div class="heart"
+                onclick="event.stopPropagation();toggleHeart(this)">♡
+                </div>
+              </div>
+              <div class="card-info">
+                <div class="top-row">
+                    <h3>${stay.name}</h3>
+                    <p>★ ${stay.rating}</p>
+                </div>
+                <p class="gray">Amazing stay</p>
+                <p class="price">${stay.price}</p>
+              </div>
+            </div>`;
+          });
+          container.innerHTML += `<div class="card see-all-card" onclick="showAll('${containerId}')">
+            <div class="img-box" style="
+            height:170px; 
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:#f7f7f7;
+            border-radius:22px;
+            flex-direction:column;">
+            <div style="display:flex; gap:8px;">
+                <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1200"
+                  style="width:60px;height:60px;border-radius:14px;transform:rotate(-10deg);">
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200"
+                  style="width:60px;height:60px;border-radius:14px;">
+                <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?w=1200"
+                  style="width:60px;height:60px;border-radius:14px;transform:rotate(10deg);">
+            </div>
+            <h3 style="margin-top:15px;">See all</h3>
+            </div>
+            </div>`;
+        });
+        function openPopup(title,img,price,rating){
+            document.getElementById("propertyPopup").style.display="flex";
+            document.getElementById("popupImg").src=img;
+            document.getElementById("popupTitle").innerText = title;
+            document.getElementById("popupPrice").innerText=price;
+            document.getElementById("popupRating").innerText="★ "+rating;
+        }
+        function closePopup(){document.getElementById("propertyPopup").style.display="none";}
+        function showAll(containerId){
+            const stays = extraLocations[containerId];
+            let cardsHTML = "";
+            stays.forEach(stay=>{cardsHTML += `
+            <div style="
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 4px 12px rgba(0,0,0,.08);">
+            <img src="${stay.img}"
+            style="width:100%;height:200px;object-fit:cover;">
+                <div style="padding:15px;">
+                <h3>${stay.name}</h3>
+                <p>★ ${stay.rating}</p>
+                <p>${stay.price}</p>
+                </div>
+            </div>`;});
+            document.getElementById("propertyPopup").style.display="flex";
+            document.querySelector(".popup-box").innerHTML = `
+            <span class="close-popup"
+            onclick="closePopup()">✕</span>
+            <h2 style="margin-bottom:20px;">See all stays</h2>
+            <div style="
+            display:grid;
+            grid-template-columns:repeat(2,1fr);
+            gap:20px;
+            max-height:500px;
+            overflow-y:auto;">${cardsHTML}
+            </div>`;
+        }
+        function showCategory(category){
+            const data = stays[category];
+            let cardsHTML = "";
+            data.forEach(stay=>{cardsHTML += `
+                <div style="
+                border-radius:18px;
+                overflow:hidden;
+                box-shadow:0 4px 12px rgba(0,0,0,.08);">
+                <img src="${stay.img}"
+                style="width:100%;height:200px;object-fit:cover;">
+                <div style="padding:15px;">
+                    <h3>${stay.name}</h3>
+                    <p>★ ${stay.rating}</p>
+                    <p>${stay.price}</p>
+                </div>
+                </div>`;});
+                document.getElementById("propertyPopup").style.display="flex";
+                document.querySelector(".popup-box").innerHTML = `
+                <span class="close-popup"
+                onclick="closePopup()">✕</span>
+                <h2 style="margin-bottom:20px;">See all stays in ${category}</h2>
+                <div style="
+                display:grid;
+                grid-template-columns:repeat(2,1fr);
+                gap:20px;
+                max-height:500px;
+                overflow-y:auto;">${cardsHTML}</div>`;
+        }
+        function changeFooterTab(element,type){
+            document.querySelectorAll(".tab").forEach(tab=>{
+                tab.classList.remove("active-tab");});
+            element.classList.add("active-tab");
+            const grid =document.querySelector(".inspiration-grid");
+            if(type==="beach"){
+                grid.innerHTML = `
+                <div><h4>Goa</h4><p>Beach stays</p></div>
+                <div><h4>Maldives</h4><p>Luxury villas</p></div>
+                <div><h4>Bali</h4><p>Holiday rentals</p></div>
+                <div><h4>Kerala</h4><p>Houseboats</p></div> `; }
+            else if(type==="mountains"){
+                grid.innerHTML = `
+                <div><h4>Manali</h4><p>Cabins</p></div>
+                <div><h4>Ooty</h4><p>Hill stays</p></div>
+                <div><h4>Kashmir</h4><p>Luxury homes</p></div>
+                <div><h4>Switzerland</h4><p>Mountain views</p></div> `; }
+            else if(type==="arts"){
+                grid.innerHTML = `
+                <div><h4>Paris</h4><p>Culture stays</p></div>
+                <div><h4>Tokyo</h4><p>City experiences</p></div>
+                <div><h4>London</h4><p>Apartment rentals</p></div>
+                <div><h4>Rome</h4><p>Historic stays</p></div>`;}
+            else if(type==="outdoors"){
+                grid.innerHTML = `
+                <div><h4>Munnar</h4><p>Nature stays</p></div>
+                <div><h4>Coorg</h4><p>Forest cottages</p></div>
+                <div><h4>Rishikesh</h4><p>River camps</p></div>
+                <div><h4>Shimla</h4><p>Mountain cabins</p></div>`;}
+            else{location.reload();}
+        }
+        function openHelp(){alert("Help Centre coming soon");}
+        function toggleHeart(el){
+            if(el.innerHTML==="♡"){
+                el.innerHTML="♥";
+                el.style.color="#ff385c";
+            }
+            else{
+                el.innerHTML="♡";
+                el.style.color="white";
+            }
+        }
+        function toggleMenu(){
+            const menu =document.getElementById("menuPopup");
+            if(menu.style.display === "block"){
+                menu.style.display = "none";
+            }
+            else{
+                menu.style.display = "block";
+            }
+        }
+        // close when clicking outside
+        document.addEventListener("click",function(e){
+            const menu =document.getElementById("menuPopup");
+            const profile =document.querySelector(".profile");
+            if(!profile.contains(e.target) &&!menu.contains(e.target)){
+                menu.style.display="none";
+            }
+        });
+        function scrollLeftCards(){document.getElementById("cardsContainer")
+        .scrollBy({left:-400,behavior:"smooth"});
+        }
+        function scrollRightCards(){document.getElementById("cardsContainer")
+        .scrollBy({left:400,behavior:"smooth"});
+        }
+        document.querySelectorAll(".card").forEach((card,index)=>{
+            card.style.animationDelay = `${index * 0.12}s`;
+        });
+        </script>
+        <!-- INSPIRATION SECTION -->
+        <section class="inspiration-section">
+            <h2>Inspiration for future getaways</h2>
+            <div class="inspiration-tabs">
+                <span class="active-tab" onclick="changeFooterTab(this,'popular')">Popular</span>
+                <span class="tab" onclick="changeFooterTab(this,'arts')">Arts & culture</span>
+                <span class="tab" onclick="changeFooterTab(this,'outdoors')">Outdoors</span>
+                <span class="tab" onclick="changeFooterTab(this,'mountains')">Mountains</span>
+                <span class="tab" onclick="changeFooterTab(this,'beach')">Beach</span>
+            </div>
+            <div class="inspiration-grid">
+                <div>
+                    <h4>Dallas</h4>
+                    <p>Monthly Rentals</p>
+                </div>
+                <div>
+                    <h4>Cleveland</h4>
+                    <p>House rentals</p>
+                </div>
+                <div>
+                    <h4>North Myrtle Beach</h4>
+                    <p>Flat rentals</p>
+                </div>
+                <div>
+                    <h4>Portland</h4>
+                    <p>Cottage rentals</p>
+                </div>
+                <div>
+                    <h4>Nice</h4>
+                    <p>House rentals</p>
+                </div>
+                <div>
+                    <h4>Barcelona</h4>
+                    <p>Apartment rentals</p>
+                </div>
+                <div>
+                    <h4>Kauai</h4>
+                    <p>Holiday rentals</p>
+                </div>
+                <div>
+                    <h4>Galveston</h4>
+                    <p>Flat rentals</p>
+                </div>
+                <div>
+                    <h4>Minneapolis</h4>
+                    <p>Holiday rentals</p>
+                </div>
+                <div>
+                    <h4>Tokyo</h4>
+                    <p>House rentals</p>
+                </div>
+                <div>
+                    <h4>Amsterdam</h4>
+                    <p>House rentals</p>
+                </div>
+                <div>
+                    <h4>Show more ▼</h4>
+                </div>
+            </div>
+        </section>
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-grid">
+                <div>
+                    <h3>Support</h3>
+                    <p onclick="openHelp()">Help Centre</p>
+                    <p>Cancellation options</p>
+                    <p>Safety information</p>
+                    <p>Report concern</p>
+                </div>
+                <div>
+                    <h3>Hosting</h3>
+                    <p>Airbnb your home</p>
+                    <p>Hosting resources</p>
+                    <p>Community forum</p>
+                </div>
+                <div>
+                    <h3>Airbnb</h3>
+                    <p>Newsroom</p>
+                    <p>Careers</p>
+                    <p>Investors</p>
+                    <p>Gift cards</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-left">
+                    © 2026 Airbnb, Inc.
+                    · Privacy
+                    · Terms
+                    · Sitemap
+
+                </div>
+                <div class="footer-right">
+                    🌐 English (IN)
+                    &nbsp;&nbsp;
+                    ₹ INR
+                    &nbsp;&nbsp;
+                    ⓕ
+                    &nbsp;
+                    𝕏
+                    &nbsp;
+                    📷
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>
